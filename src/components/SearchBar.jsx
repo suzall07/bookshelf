@@ -22,12 +22,16 @@ export default function SearchBar({ shelf, setShelf }) {
   async function fetchBooks() {
     setLoading(true);
 
-    const res = await fetch(
-      `https://openlibrary.org/search.json?q=${query}`
-    );
-    const data = await res.json();
+    try {
+      const res = await fetch(
+        `https://openlibrary.org/search.json?q=${query}`
+      );
+      const data = await res.json();
+      setResults(data.docs.slice(0, 10));
+    } catch (error) {
+      console.error("API Error:", error);
+    }
 
-    setResults(data.docs.slice(0, 10));
     setLoading(false);
   }
 
@@ -40,7 +44,7 @@ export default function SearchBar({ shelf, setShelf }) {
         style={{ padding: 10, width: "100%", marginBottom: 15 }}
       />
 
-      {loading && <p>Loading books...</p>}
+      {loading && <p>the books will be loading soon...</p>}
 
       {results.map((book) => (
         <BookCard
