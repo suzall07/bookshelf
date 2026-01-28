@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
 import SearchBar from "./components/SearchBar";
-import Shelf from "./components/Shelf";
+import ShelfPage from "./pages/ShelfPage";  
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 export default function App() {
   const [shelf, setShelf] = useState([]);
   const [hydrated, setHydrated] = useState(false);
 
-  // Load shelf from localStorage on mount
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("shelf")) || [];
     setShelf(saved);
     setHydrated(true);
   }, []);
 
-  // Save shelf to localStorage whenever it changes
   useEffect(() => {
     if (hydrated) {
       localStorage.setItem("shelf", JSON.stringify(shelf));
@@ -38,7 +36,7 @@ export default function App() {
               path="/"
               element={<SearchBar shelf={shelf} setShelf={setShelf} />}
             />
-            <Route path="/shelf" element={<Shelf shelf={shelf} />} />
+            <Route path="/shelf" element={<ShelfPage shelf={shelf} />} />
           </Routes>
         )}
       </div>

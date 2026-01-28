@@ -5,7 +5,7 @@ export default function ShelfPage({ shelf }) {
     <div style={{ padding: 20 }}>
       <h2>📖 My Shelf</h2>
       <p style={{ color: "#555", marginBottom: 15 }}>
-        Here are the books you’ve saved to your personal library.
+        Here are the books you've saved to your personal library.
       </p>
 
       {shelf.length === 0 ? (
