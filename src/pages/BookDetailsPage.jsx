@@ -15,8 +15,14 @@ export default function BookDetailsPage({ shelf, setShelf }) {
     async function fetchBookDetails() {
       setLoading(true);
       try {
+        // Normalize book key for OpenLibrary API
+        let apiKey = bookKey;
+        if (!bookKey.startsWith('/works/')) {
+          apiKey = `/works/${bookKey}`;
+        }
+        
         // Fetch book details
-        const bookRes = await fetch(`https://openlibrary.org${bookKey}.json`);
+        const bookRes = await fetch(`https://openlibrary.org${apiKey}.json`);
         const bookData = await bookRes.json();
         
         // Fetch author details if available
@@ -58,7 +64,7 @@ export default function BookDetailsPage({ shelf, setShelf }) {
     if (!book || isSaved) return;
     
     const bookToSave = {
-      key: book.key,
+      key: `/works/${bookKey}`, // Store with /works/ prefix for consistency
       title: book.title,
       author_name: book.author_name,
       cover_i: book.cover_i,
