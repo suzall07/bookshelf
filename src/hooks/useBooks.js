@@ -54,9 +54,9 @@ export function useBookDetails(bookKey) {
   });
 }
 
-export function useRecommendations() {
+export function useRecommendations(timestamp) {
   return useQuery({
-    queryKey: ['books', 'recommendations'],
+    queryKey: ['books', 'recommendations', timestamp],
     queryFn: async () => {
       const res = await fetch(
         'https://openlibrary.org/subjects/fantasy.json?limit=2'

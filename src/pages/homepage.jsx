@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import BookCard from "../components/BookCard";
 import { useBookContext } from "../pages/BookContext";
@@ -6,15 +6,21 @@ import { useRecommendations } from "../hooks/useBooks";
 
 export default function HomePage() {
   const { shelf } = useBookContext();
+  const [recommendationsTimestamp, setRecommendationsTimestamp] = useState(Date.now());
   
   const { 
     data: recommendationsData, 
     isLoading: loadingRec, 
     refetch: fetchRecommendations,
     isError: recError 
-  } = useRecommendations();
+  } = useRecommendations(recommendationsTimestamp);
 
-  const recommendations = recommendationsData?.works || [];
+  useEffect(() => {
+    const newTimestamp = Date.now();
+    setRecommendationsTimestamp(newTimestamp);
+  }, []);
+
+  const recommendations = (recommendationsData?.works || []).slice(0, 9); // Limit to 9 books
 
   const stats = [
     { label: "Total Books", value: shelf.length },
@@ -37,15 +43,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="bg-white border border-amber-200 rounded-2xl p-6 shadow-sm">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-semibold text-amber-900">Recommended Reads</h2>
-          <button 
-            onClick={fetchRecommendations} 
-            className="px-4 py-2 border border-amber-300 rounded-lg text-amber-800 hover:bg-amber-50 transition"
-          >
-            Refresh
-          </button>
+      <section className="bg-white border border-amber-200 rounded-2xl p-8 shadow-sm">
+        <div className="mb-6">
+          <h2 className="text-2xl font-semibold text-amber-900">Featured Books</h2>
         </div>
 
         {loadingRec ? (
@@ -59,25 +59,29 @@ export default function HomePage() {
           <div className="text-center py-12">
             <p className="text-red-600">Failed to load recommendations</p>
             <button 
-              onClick={fetchRecommendations} 
+              onClick={() => {
+                const newTimestamp = Date.now();
+                setRecommendationsTimestamp(newTimestamp);
+              }}
               className="mt-2 px-4 py-2 text-sm text-amber-700 hover:text-amber-900"
             >
               Retry
             </button>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> 
             {recommendations.map((work) => (
-              <BookCard 
-                key={work.key} 
-                book={{ 
-                  key: work.key, 
-                  title: work.title, 
-                  author_name: work.authors?.map(a => a.name), 
-                  cover_i: work.cover_id, 
-                  first_publish_year: work.first_publish_year 
-                }} 
-              />
+              <div key={work.key} className="flex">
+                <BookCard 
+                  book={{ 
+                    key: work.key, 
+                    title: work.title, 
+                    author_name: work.authors?.map(a => a.name), 
+                    cover_i: work.cover_id, 
+                    first_publish_year: work.first_publish_year 
+                  }} 
+                />
+              </div>
             ))}
           </div>
         )}
