@@ -1,45 +1,29 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useBookContext } from "../pages/BookContext";
 
-export default function ShelfPage({ shelf, setShelf }) {
+export default function ShelfPage() {
   const navigate = useNavigate();
+  const { shelf, removeFromShelf } = useBookContext();
 
-  const getBookId = (bookKey) => {
-    if (!bookKey) return "";
-    if (bookKey.includes("/")) {
-      return bookKey.split("/").pop();
-    }
-    return bookKey;
-  };
-
-  function removeBook(key, e) {
-    e.stopPropagation();
-    setShelf(shelf.filter(book => book.key !== key));
-  }
+  const getBookId = (bookKey) => bookKey?.includes("/") ? bookKey.split("/").pop() : bookKey || "";
+  const removeBook = (key, e) => { e.stopPropagation(); removeFromShelf(key); };
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-6 shadow-sm">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">📚 My Bookshelf</h1>
-        <p className="text-gray-600">
-          {shelf.length === 0 
-            ? "Your shelf is waiting for adventures! Start adding books."
-            : `You have ${shelf.length} book${shelf.length !== 1 ? 's' : ''} in your collection.`
-          }
+      <div className="bg-gradient-to-r from-amber-100 to-orange-100 rounded-2xl p-6 shadow-sm">
+        <h1 className="text-3xl font-bold text-amber-900 mb-2">📚 My Bookshelf</h1>
+        <p className="text-amber-800">
+          {shelf.length === 0 ? "Your shelf is waiting for adventures! Start adding books." : `You have ${shelf.length} book${shelf.length !== 1 ? 's' : ''} in your collection.`}
         </p>
       </div>
 
-      {/* Books Grid */}
       {shelf.length === 0 ? (
         <div className="bg-white rounded-2xl p-12 text-center shadow-sm">
-          <div className="text-6xl mb-4">📭</div>
+          <div className="text-6xl mb-4">🔭</div>
           <h3 className="text-xl font-bold text-gray-700 mb-2">Empty Shelf</h3>
           <p className="text-gray-600 mb-6">No books saved yet. Search for books to add them to your shelf!</p>
-          <a 
-            href="/search" 
-            className="inline-block px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-200 shadow-md"
-          >
+          <a href="/search" className="inline-block px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-xl font-semibold hover:from-amber-700 hover:to-orange-700 transition-all shadow-md">
             🔍 Start Searching
           </a>
         </div>
@@ -48,58 +32,33 @@ export default function ShelfPage({ shelf, setShelf }) {
           {shelf.map((book) => (
             <div 
               key={book.key} 
-              className="
-                bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg 
-                transition-all duration-300 border border-gray-100 hover:border-purple-200
-                transform hover:-translate-y-1 cursor-pointer
-              "
+              className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-amber-100 hover:border-amber-300 transform hover:-translate-y-1 cursor-pointer"
               onClick={() => navigate(`/book/${getBookId(book.key)}`)}
             >
-              {/* Book Cover */}
               <div className="relative h-48 overflow-hidden">
                 {book.coverUrl ? (
-                  <img 
-                    src={book.coverUrl} 
-                    alt={book.title}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
+                  <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover hover:scale-105 transition-transform" />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-300 flex items-center justify-center">
-                    <span className="text-gray-400 text-lg">📖</span>
+                  <div className="w-full h-full bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
+                    <span className="text-amber-600 text-lg">📖</span>
                   </div>
                 )}
-                <div className="absolute top-2 right-2">
-                  <button 
-                    onClick={(e) => removeBook(book.key, e)}
-                    className="
-                      bg-red-500 text-white text-xs px-2 py-1 rounded-full 
-                      hover:bg-red-600 transition-colors duration-200 shadow-md
-                      flex items-center gap-1
-                    "
-                  >
-                    ✕ Remove
-                  </button>
-                </div>
+                <button 
+                  onClick={(e) => removeBook(book.key, e)}
+                  className="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full hover:bg-red-600 transition-colors shadow-md flex items-center gap-1"
+                >
+                  ✕ Remove
+                </button>
               </div>
 
-              {/* Book Info */}
               <div className="p-4">
-                <h4 className="font-bold text-gray-800 mb-1 line-clamp-1" title={book.title}>
-                  {book.title}
-                </h4>
-                <p className="text-gray-600 text-sm mb-2 line-clamp-1">
-                  {book.author_name?.[0] || "Unknown Author"}
-                </p>
+                <h4 className="font-bold text-gray-800 mb-1 line-clamp-1" title={book.title}>{book.title}</h4>
+                <p className="text-gray-600 text-sm mb-2 line-clamp-1">{book.author_name?.[0] || "Unknown Author"}</p>
                 <div className="flex justify-between items-center">
-                  <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">
-                    {book.first_publish_year || "Year N/A"}
-                  </span>
+                  <span className="text-xs text-amber-700 bg-amber-50 px-2 py-1 rounded">{book.first_publish_year || "Year N/A"}</span>
                   <button 
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/book/${getBookId(book.key)}`);
-                    }}
-                    className="text-blue-600 text-sm font-medium hover:text-blue-700"
+                    onClick={(e) => { e.stopPropagation(); navigate(`/book/${getBookId(book.key)}`); }}
+                    className="text-amber-700 text-sm font-medium hover:text-amber-900"
                   >
                     View Details
                   </button>
