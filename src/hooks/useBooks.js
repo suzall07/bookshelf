@@ -54,12 +54,12 @@ export function useBookDetails(bookKey) {
   });
 }
 
-export function useRecommendations(timestamp) {
+export function useRecommendations() {
   return useQuery({
-    queryKey: ['books', 'recommendations', timestamp],
+    queryKey: ['books', 'recommendations'],
     queryFn: async () => {
       const res = await fetch(
-        'https://openlibrary.org/subjects/fantasy.json?limit=2'
+        'https://openlibrary.org/subjects/fantasy.json?limit=9'
       );
       if (!res.ok) throw new Error('Failed to fetch recommendations');
       return res.json();

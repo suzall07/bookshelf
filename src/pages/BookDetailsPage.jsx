@@ -1,14 +1,13 @@
 import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useBookContext } from "../pages/BookContext";
-import { useBookDetails } from "../hooks/useBooks"; // Import the hook
+import { useBookDetails } from "../hooks/useBooks";
 
 export default function BookDetailsPage() {
   const { bookKey } = useParams();
   const navigate = useNavigate();
   const { isBookSaved, addToShelf } = useBookContext();
   
-  // Use TanStack Query for book details
   const { 
     data: book, 
     isLoading: loading, 
@@ -61,17 +60,17 @@ export default function BookDetailsPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50 p-6">
+    <div className="min-h-screen bg-amber-50 p-6">
       <div className="max-w-4xl mx-auto">
         <button onClick={() => navigate(-1)} className="inline-flex items-center gap-2 text-amber-700 hover:text-amber-900 mb-6">← Back</button>
 
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           <div className="md:flex">
-            <div className="md:w-1/3 p-8 bg-gradient-to-br from-amber-50 to-orange-50">
+            <div className="md:w-1/3 p-8 bg-amber-50">
               {coverUrl ? (
                 <img src={coverUrl} alt={book.title} className="w-full max-w-sm mx-auto rounded-lg shadow-lg" />
               ) : (
-                <div className="w-full h-64 bg-gradient-to-br from-amber-200 to-orange-200 rounded-lg flex items-center justify-center">
+                <div className="w-full h-64 bg-amber-200 rounded-lg flex items-center justify-center">
                   <span className="text-5xl text-amber-600">📖</span>
                 </div>
               )}
@@ -88,7 +87,7 @@ export default function BookDetailsPage() {
                 <button
                   onClick={handleSaveBook}
                   disabled={isSaved}
-                  className={`px-6 py-3 rounded-lg font-semibold transition-all ${isSaved ? "bg-green-100 text-green-700 cursor-not-allowed" : "bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white hover:shadow-lg"}`}
+                  className={`px-6 py-3 rounded-lg font-semibold transition-all ${isSaved ? "bg-green-100 text-green-700 cursor-not-allowed" : "bg-amber-600 hover:bg-amber-700 text-white hover:shadow-lg"}`}
                 >
                   {isSaved ? "✓ Saved" : "⭐ Save"}
                 </button>

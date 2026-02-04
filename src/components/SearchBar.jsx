@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import BookCard from "./BookCard";
-import { useSearchBooks } from "../hooks/useBooks"; // Import the hook
+import { useSearchBooks } from "../hooks/useBooks";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
@@ -11,7 +11,6 @@ export default function SearchBar() {
     return () => clearTimeout(timer);
   }, [query]);
 
-  // Use TanStack Query instead of manual fetching
   const { 
     data: searchData, 
     isLoading: loading, 
@@ -39,7 +38,7 @@ export default function SearchBar() {
         )}
       </div>
 
-      <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4">
+      <div className="bg-amber-50 rounded-xl p-4">
         <div className="flex justify-between items-center">
           <p className="text-gray-700">
             {query ? (

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useBookContext } from "../pages/BookContext";
+import { useBookContext } from "../context/BookContext";
 
 export default function ShelfPage() {
   const navigate = useNavigate();
@@ -11,7 +11,7 @@ export default function ShelfPage() {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-amber-100 to-orange-100 rounded-2xl p-6 shadow-sm">
+      <div className="bg-amber-100 rounded-2xl p-6 shadow-sm">
         <h1 className="text-3xl font-bold text-amber-900 mb-2">📚 My Bookshelf</h1>
         <p className="text-amber-800">
           {shelf.length === 0 ? "Your shelf is waiting for adventures! Start adding books." : `You have ${shelf.length} book${shelf.length !== 1 ? 's' : ''} in your collection.`}
@@ -23,7 +23,7 @@ export default function ShelfPage() {
           <div className="text-6xl mb-4">🔭</div>
           <h3 className="text-xl font-bold text-gray-700 mb-2">Empty Shelf</h3>
           <p className="text-gray-600 mb-6">No books saved yet. Search for books to add them to your shelf!</p>
-          <a href="/search" className="inline-block px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white rounded-xl font-semibold hover:from-amber-700 hover:to-orange-700 transition-all shadow-md">
+          <a href="/search" className="inline-block px-6 py-3 bg-amber-600 text-white rounded-xl font-semibold hover:bg-amber-700 transition-all shadow-md">
             🔍 Start Searching
           </a>
         </div>
@@ -39,7 +39,7 @@ export default function ShelfPage() {
                 {book.coverUrl ? (
                   <img src={book.coverUrl} alt={book.title} className="w-full h-full object-cover hover:scale-105 transition-transform" />
                 ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
+                  <div className="w-full h-full bg-amber-100 flex items-center justify-center">
                     <span className="text-amber-600 text-lg">📖</span>
                   </div>
                 )}

@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useBookContext } from "../pages/BookContext";
+import { useBookContext } from "../context/BookContext";
 
 export default function BookCard({ book }) {
   const navigate = useNavigate();
@@ -17,13 +17,13 @@ export default function BookCard({ book }) {
   return (
     <div 
       onClick={() => navigate(`/book/${bookId}`)}
-      className="flex gap-4 p-5 mb-4 cursor-pointer max-w-2xl mx-auto border-2 border-amber-200 rounded-xl shadow-md hover:shadow-lg hover:border-amber-400 transition-all bg-white hover:bg-gradient-to-r hover:from-white hover:to-amber-50"
+      className="flex gap-4 p-5 mb-4 cursor-pointer max-w-2xl mx-auto border-2 border-amber-200 rounded-xl shadow-md hover:shadow-lg hover:border-amber-400 transition-all bg-white hover:bg-amber-50"
     >
       <div className="relative">
         {coverUrl ? (
           <img src={coverUrl} alt={book.title} className="w-24 h-36 rounded-lg shadow-lg object-cover hover:scale-105 transition-transform" />
         ) : (
-          <div className="w-24 h-36 rounded-lg bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
+          <div className="w-24 h-36 rounded-lg bg-amber-100 flex items-center justify-center">
             <span className="text-amber-600 text-sm px-2">📚 No Cover</span>
           </div>
         )}
@@ -36,7 +36,7 @@ export default function BookCard({ book }) {
       </div>
 
       <div className="flex-1">
-        <h3 className="text-xl font-bold mb-2 bg-gradient-to-r from-amber-700 to-orange-700 bg-clip-text text-transparent">
+        <h3 className="text-xl font-bold mb-2 text-amber-700">
           {book.title}
         </h3>
         
@@ -56,8 +56,8 @@ export default function BookCard({ book }) {
             disabled={isSaved}
             className={`px-4 py-2 rounded-lg font-semibold flex items-center gap-2 ${
               isSaved 
-                ? "bg-gradient-to-r from-green-100 to-green-200 text-green-700 border border-green-300 opacity-90 cursor-not-allowed"
-                : "bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white transform hover:scale-105 transition-all shadow-md hover:shadow-lg"
+                ? "bg-green-100 text-green-700 border border-green-300 opacity-90 cursor-not-allowed"
+                : "bg-amber-600 hover:bg-amber-700 text-white transform hover:scale-105 transition-all shadow-md hover:shadow-lg"
             }`}
           >
             <span className="text-lg">{isSaved ? "✓" : "⭐"}</span>

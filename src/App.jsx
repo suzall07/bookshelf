@@ -1,6 +1,6 @@
 import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { useBookContext } from "./pages/BookContext";
+import { useBookContext } from "./context/BookContext";
 
 const HomePage = lazy(() => import("./pages/HomePage").catch(() => ({ default: () => <div>Failed to load HomePage</div> })));
 const SearchPage = lazy(() => import("./pages/SearchPage").catch(() => ({ default: () => <div>Failed to load SearchPage</div> })));
@@ -23,7 +23,7 @@ export default function App() {
 
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50 p-6">
+      <div className="min-h-screen bg-amber-50 p-6">
         <header className="max-w-6xl mx-auto mb-8">
           <h1 className="text-4xl font-bold text-center text-amber-900 mb-6">📚 The Infinite Bookshelf</h1>
           

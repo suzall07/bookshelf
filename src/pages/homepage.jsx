@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import BookCard from "../components/BookCard";
-import { useBookContext } from "../pages/BookContext";
+import { useBookContext } from "../context/BookContext";
 import { useRecommendations } from "../hooks/useBooks";
 
 export default function HomePage() {
   const { shelf } = useBookContext();
-  const [recommendationsTimestamp, setRecommendationsTimestamp] = useState(Date.now());
   
+  // Remove timestamp parameter - the hook should handle its own caching
   const { 
     data: recommendationsData, 
     isLoading: loadingRec, 
     refetch: fetchRecommendations,
     isError: recError 
-  } = useRecommendations(recommendationsTimestamp);
+  } = useRecommendations(); // ← No timestamp needed!
 
-  useEffect(() => {
-    const newTimestamp = Date.now();
-    setRecommendationsTimestamp(newTimestamp);
-  }, []);
+  // Remove the useEffect entirely - it's causing unnecessary re-renders
+  // useEffect(() => {
+  //   const newTimestamp = Date.now();
+  //   setRecommendationsTimestamp(newTimestamp);
+  // }, []);
 
   const recommendations = (recommendationsData?.works || []).slice(0, 9); // Limit to 9 books
 
@@ -58,11 +59,9 @@ export default function HomePage() {
         ) : recError ? (
           <div className="text-center py-12">
             <p className="text-red-600">Failed to load recommendations</p>
+            {/* Use the direct refetch function instead of changing timestamp */}
             <button 
-              onClick={() => {
-                const newTimestamp = Date.now();
-                setRecommendationsTimestamp(newTimestamp);
-              }}
+              onClick={() => fetchRecommendations()} // ← Direct refetch!
               className="mt-2 px-4 py-2 text-sm text-amber-700 hover:text-amber-900"
             >
               Retry
